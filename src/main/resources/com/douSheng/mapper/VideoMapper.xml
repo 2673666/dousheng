@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.douSheng.mapper.VideoMapper" >
+  <resultMap id="BaseResultMap" type="com.douSheng.pojo.Video" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="play_url" property="playUrl" jdbcType="VARCHAR"/>
+    <result column="cover_url" property="coverUrl" jdbcType="VARCHAR"/>
+    <result column="comment_count" property="commentCount" jdbcType="BIGINT" />
+    <result column="favourite_count" property="favouriteCount" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_favourite" property="isFavourite" jdbcType="TINYINT" />
+    <association property="user" javaType="com.douSheng.pojo.User">
+      <id property="id" column="id"></id>
+      <id property="name" column="name"></id>
+      <id property="password" column="password"></id>
+      <id property="followCount" column="follow_count"></id>
+      <id property="followerCount" column="follower_count"></id>
+      <id property="createTime" column="create_time"></id>
+      <id property="updateTime" column="update_time"></id>
+      <id property="isFollow" column="is_follow"></id>
+    </association>
+
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.douSheng.pojo.VideoWithBLOBs" extends="BaseResultMap" >
+    <result column="play_url" property="playUrl" jdbcType="LONGVARCHAR" />
+    <result column="cover_url" property="coverUrl" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uid, comment_count, favourite_count, title, create_time, update_time, is_deleted
+  </sql>
+  <sql id="Blob_Column_List" >
+    play_url, cover_url
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.douSheng.pojo.VideoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from video
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.douSheng.pojo.VideoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from video
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from video
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from video
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.douSheng.pojo.VideoExample" >
+    delete from video
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.douSheng.pojo.VideoWithBLOBs" useGeneratedKeys="true" keyProperty="id">
+    insert into video (id, uid, comment_count, 
+      favourite_count, title, create_time, 
+      update_time, is_favourite, play_url,
+      cover_url)
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{commentCount,jdbcType=BIGINT}, 
+      #{favouriteCount,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT}, #{playUrl,jdbcType=LONGVARCHAR}, 
+      #{coverUrl,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.douSheng.pojo.Video" >
+    insert into video
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="commentCount != null" >
+        comment_count,
+      </if>
+      <if test="favouriteCount != null" >
+        favourite_count,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isFavourite != null" >
+        isFavourite,
+      </if>
+      <if test="playUrl != null" >
+        play_url,
+      </if>
+      <if test="coverUrl != null" >
+        cover_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="favouriteCount != null" >
+        #{favouriteCount,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isFavourite != null" >
+        #{isFavourite,jdbcType=TINYINT},
+      </if>
+      <if test="playUrl != null" >
+        #{playUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="coverUrl != null" >
+        #{coverUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.douSheng.pojo.VideoExample" resultType="java.lang.Integer" >
+    select count(*) from video
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectAllVideos" resultMap="BaseResultMap" parameterType="long">
+    select v.id,v.play_url,v.cover_url,v.favourite_count,v.comment_count,f.is_favourite,v.title,u.id,u.name,u.follow_count,u.follower_count,u.is_follow
+    from video v left join user u on v.uid = u.id join favourite f on v.id = f.vid
+    <where>
+      <if test="uid != -1">  
+        f.uid = #{uid}
+      </if>
+    </where>
+  </select>
+  <select id="getVideosById" resultType="com.douSheng.pojo.Video" parameterType="int" resultMap="BaseResultMap">
+    select * from video
+    where uid = #{uid}
+  </select>
+    <select id="selectFavoriteListById" resultType="com.douSheng.pojo.Video" resultMap="BaseResultMap" parameterType="long">
+    select *
+    from video v join favourite f on v.id = f.vid
+    where f.uid = #{uid}
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
+    update video
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.commentCount != null" >
+        comment_count = #{record.commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.favouriteCount != null" >
+        favourite_count = #{record.favouriteCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.playUrl != null" >
+        play_url = #{record.playUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.coverUrl != null" >
+        cover_url = #{record.coverUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update video
+    set id = #{record.id,jdbcType=BIGINT},
+      uid = #{record.uid,jdbcType=BIGINT},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      favourite_count = #{record.favouriteCount,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_favourite = #{record.isFavourite,jdbcType=TINYINT},
+      play_url = #{record.playUrl,jdbcType=LONGVARCHAR},
+      cover_url = #{record.coverUrl,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update video
+    set id = #{record.id,jdbcType=BIGINT},
+      uid = #{record.uid,jdbcType=BIGINT},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      favourite_count = #{record.favouriteCount,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    is_favourite = #{record.isDeleted,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.douSheng.pojo.VideoWithBLOBs" >
+    update video
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="favouriteCount != null" >
+        favourite_count = #{favouriteCount,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="playUrl != null" >
+        play_url = #{playUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="coverUrl != null" >
+        cover_url = #{coverUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.douSheng.pojo.VideoWithBLOBs" >
+    update video
+    set uid = #{uid,jdbcType=BIGINT},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      favourite_count = #{favouriteCount,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+        is_favourite = #{isDeleted,jdbcType=TINYINT},
+      play_url = #{playUrl,jdbcType=LONGVARCHAR},
+      cover_url = #{coverUrl,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.douSheng.pojo.Video" >
+    update video
+    set uid = #{uid,jdbcType=BIGINT},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      favourite_count = #{favouriteCount,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+        is_favourite = #{isDeleted,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

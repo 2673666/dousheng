@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    username: root
+    password: 12345
+    url: jdbc:mysql://localhost:13306/dousheng
+    driver-class-name: com.mysql.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  devtools:
+    restart:
+      enabled: true
+
+  resources:
+    static-locations: classpath:static/
+
+mybatis:
+  mapper-locations: classpath:/resource/com/douSheng/mapper/*.xml
+  type-aliases-package: com.douSheng.mapper
+server:
+  port: 8081
+
