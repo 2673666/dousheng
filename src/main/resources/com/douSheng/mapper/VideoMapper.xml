@@ -223,14 +223,9 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <select id="selectAllVideos" resultMap="BaseResultMap" parameterType="long">
-    select v.id,v.play_url,v.cover_url,v.favourite_count,v.comment_count,f.is_favourite,v.title,u.id,u.name,u.follow_count,u.follower_count,u.is_follow
-    from video v left join user u on v.uid = u.id join favourite f on v.id = f.vid
-    <where>
-      <if test="uid != -1">  
-        f.uid = #{uid}
-      </if>
-    </where>
+  <select id="selectAllVideos" resultMap="BaseResultMap" >
+    select v.id,v.play_url,v.cover_url,v.favourite_count,v.comment_count,v.is_favourite,v.title,u.id,u.name,u.follow_count,u.follower_count,u.is_follow
+    from video v left join user u on v.uid = u.id
   </select>
   <select id="getVideosById" resultType="com.douSheng.pojo.Video" parameterType="int" resultMap="BaseResultMap">
     select * from video

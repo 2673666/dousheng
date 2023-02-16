@@ -23,8 +23,8 @@ public class VideoServiceImpl implements VideoService {
     private UserMapper userMapper;
 
     @Override
-    public List<Video> getVideos(long uid) {
-        return videoMapper.selectAllVideos(uid);
+    public List<Video> getVideos() {
+        return videoMapper.selectAllVideos();
     }
 
     @Override

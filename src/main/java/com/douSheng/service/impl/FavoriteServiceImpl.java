@@ -23,6 +23,7 @@ public class FavoriteServiceImpl implements FavoriteService
     @Autowired(required = false)
     private VideoMapper videoMapper;
 
+//    点赞
     @Override
     public int action(long uid, int vid, String type) {
         byte isFavorite = 2;//取消点赞
@@ -36,16 +37,25 @@ public class FavoriteServiceImpl implements FavoriteService
         favorite.setUpdateTime(date);
         favorite.setVid((long) vid);
         favorite.setIsFavourite(isFavorite);
+        //点赞表中无数据则返回 0
         long id = favouriteMapper.selectByUVId(uid, vid);
         if(id != 0){
             favorite.setId(id);
             return favouriteMapper.updateByPrimaryKey(favorite);
         }
+//
         return favouriteMapper.insertSelective(favorite);
     }
 
     @Override
     public List<Video> getFavoriteList(long uid) {
         return videoMapper.selectFavoriteListById(uid);
+    }
+
+
+    @Override
+    public long isFavorite(long uid, long vid) {
+//        返回 0 就是 不存在数据，也就是 没有点赞
+        return favouriteMapper.selectByUVId(uid,vid);
     }
 }

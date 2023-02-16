@@ -2,7 +2,6 @@ package com.douSheng.mapper;
 
 import com.douSheng.pojo.Favorite;
 import com.douSheng.pojo.FavouriteExample;
-import com.douSheng.pojo.Video;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,6 +30,5 @@ public interface FavouriteMapper {
     int updateByPrimaryKey(Favorite record);
 
     long selectByUVId(long uid,long vid);
-
 
 }

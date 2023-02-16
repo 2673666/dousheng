@@ -12,4 +12,7 @@ public interface FavoriteService {
     int action(long uid,int vid,String type);
 
     List<Video> getFavoriteList(long uid);
+
+    long isFavorite(long uid,long vid);
+
 }

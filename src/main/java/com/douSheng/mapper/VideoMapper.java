@@ -36,7 +36,7 @@ public interface VideoMapper {
 
     int updateByPrimaryKey(Video record);
 //  查询所有视频
-    List<Video> selectAllVideos(@Param("uid") long uid);
+    List<Video> selectAllVideos();
 //  查询特定用户的所有视频
     List<Video> getVideosById(int uid);
 //  查询特定用户的所有喜欢列表

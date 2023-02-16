@@ -4,6 +4,7 @@ import com.douSheng.pojo.Result;
 import com.douSheng.pojo.User;
 import com.douSheng.pojo.Video;
 import com.douSheng.pojo.VideoListResult;
+import com.douSheng.service.FavoriteService;
 import com.douSheng.service.UserService;
 import com.douSheng.service.VideoService;
 import com.douSheng.util.GetCoverUtil;
@@ -34,6 +35,8 @@ public class VideoController {
     private VideoService videoService;
     @Autowired(required = false)
     private UserService userService;
+    @Autowired
+    private FavoriteService favoriteService;
 
 //    刷视频
     @GetMapping("/feed")
@@ -43,10 +46,18 @@ public class VideoController {
             String[] split = token.split(":");
             TokenUtils.createToken(new User(split[0],split[1]));
             //        用户 id
-            uid = userService.selectIdByName(token.split(":")[0]);
+             uid = userService.selectIdByName(token.split(":")[0]);
         }
-        List<Video> videos = videoService.getVideos(uid);
+        List<Video> videos = videoService.getVideos();
         List<Video> videos1 = ParseUrlUtil.parseUrl(videos);
+//        处理是否已经点赞
+        for(Video v:videos){
+            long index = favoriteService.isFavorite(uid, v.getId());// 0 ：没点赞
+            if(index != 0)
+                v.setIsFavourite(true);
+            else
+                v.setIsFavourite(false);
+        }
         VideoListResult v = new VideoListResult();
         v.setVideoList(videos1);
         v.setNextTime(0);
