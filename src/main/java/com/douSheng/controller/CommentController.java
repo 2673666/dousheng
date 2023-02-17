@@ -35,9 +35,6 @@ public class CommentController {
             @RequestParam("video_id") String vid
     ){
         CommentListResult result = new CommentListResult();
-        if(!TokenUtils.verify(token)){
-            return result;
-        }
         List<Comment> comments = commentService.selectCommentsByVid(Long.parseLong(vid));
         result.setCommentList(comments);
         result.setStatusCode(0);
