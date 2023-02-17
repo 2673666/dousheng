@@ -7,6 +7,7 @@ import com.douSheng.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,8 +24,8 @@ public class VideoServiceImpl implements VideoService {
     private UserMapper userMapper;
 
     @Override
-    public List<Video> getVideos() {
-        return videoMapper.selectAllVideos();
+    public List<Video> getVideos(Date date) {
+        return videoMapper.selectAllVideos(date);
     }
 
     @Override

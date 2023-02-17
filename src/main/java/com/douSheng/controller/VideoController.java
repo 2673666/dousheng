@@ -7,10 +7,7 @@ import com.douSheng.pojo.VideoListResult;
 import com.douSheng.service.FavoriteService;
 import com.douSheng.service.UserService;
 import com.douSheng.service.VideoService;
-import com.douSheng.util.GetCoverUtil;
-import com.douSheng.util.ParseUrlUtil;
-import com.douSheng.util.PathUtil;
-import com.douSheng.util.TokenUtils;
+import com.douSheng.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +38,8 @@ public class VideoController {
 
 //    刷视频
     @GetMapping("/feed")
-    public VideoListResult feed(@RequestParam(value = "token",required = false) String token) throws UnknownHostException {
+    public VideoListResult feed(@RequestParam(value = "token",required = false) String token,
+                                @RequestParam(value = "latest_time",required = false)String latestTime) throws UnknownHostException, ParseException {
         long uid = -1;
         if(token != null){
             String[] split = token.split(":");
@@ -48,7 +47,8 @@ public class VideoController {
             //        用户 id
              uid = userService.selectIdByName(token.split(":")[0]);
         }
-        List<Video> videos = videoService.getVideos();
+        Date latestDate = ParseTimeUtil.stringToDate(latestTime);
+        List<Video> videos = videoService.getVideos(latestDate);
         List<Video> videos1 = ParseUrlUtil.parseUrl(videos);
 //        处理是否已经点赞
         for(Video v:videos){

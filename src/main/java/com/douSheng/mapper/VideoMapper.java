@@ -5,6 +5,7 @@ import com.douSheng.pojo.VideoExample;
 import com.douSheng.pojo.VideoWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface VideoMapper {
@@ -36,7 +37,7 @@ public interface VideoMapper {
 
     int updateByPrimaryKey(Video record);
 //  查询所有视频
-    List<Video> selectAllVideos();
+    List<Video> selectAllVideos(Date date);
 //  查询特定用户的所有视频
     List<Video> getVideosById(int uid);
 //  查询特定用户的所有喜欢列表

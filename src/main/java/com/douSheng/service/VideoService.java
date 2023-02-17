@@ -2,6 +2,7 @@ package com.douSheng.service;
 
 import com.douSheng.pojo.Video;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @date 2023/2/10 -10:05
  */
 public interface VideoService {
-    List<Video> getVideos();//feed流：查询所有视频
+    List<Video> getVideos(Date date);//feed流：查询所有视频
 
     int publish(String userName,Video video);//视频投稿
 
