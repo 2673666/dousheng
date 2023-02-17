@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password: 12345
+    password: 数据库密码
     url: jdbc:mysql://localhost:13306/dousheng
     driver-class-name: com.mysql.jdbc.Driver
   servlet:
