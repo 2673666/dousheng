@@ -63,8 +63,4 @@ public abstract class GetCoverUtil {
         }
         ff.stop();
     }
-
-
-
-
 }

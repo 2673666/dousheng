@@ -40,4 +40,20 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> getVideosById(int uid) {
         return videoMapper.getVideosById(uid);
     }
+
+    @Override
+    public void updateFavorite(long vid, String type) {
+        int update = 0;
+        if (type.equals("1")) {//点赞
+            update = 1;
+        }
+        else if (type.equals("2"))
+            update = -1;
+        videoMapper.updateFavorite(vid,update);
+    }
+
+    @Override
+    public void updateComment(long vid) {
+        videoMapper.updateComment(vid);
+    }
 }

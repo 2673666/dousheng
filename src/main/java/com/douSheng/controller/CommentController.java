@@ -3,6 +3,7 @@ package com.douSheng.controller;
 import com.douSheng.pojo.Comment;
 import com.douSheng.service.CommentService;
 import com.douSheng.service.UserService;
+import com.douSheng.service.VideoService;
 import com.douSheng.util.TokenUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -27,6 +28,9 @@ public class CommentController {
 
     @Autowired(required = false)
     private UserService userService;
+
+    @Autowired
+    private VideoService videoService;
 
 //     查询视频的评论列表
     @RequestMapping("/list")
@@ -88,11 +92,13 @@ public class CommentController {
             comment.setUid(userService.selectIdByName(uname));
             comment.setContent(text);
             long id = commentService.comment(comment);
-            if ((id != 0)){
+            if ((id != 0)){//发表评论成功
                 result.setStatusMsg("success");
                 result.setStatusCode(0);
                 comment.setId(id);
                 result.setComment(comment);
+                videoService.updateComment(Long.parseLong(vid));
+
             }
         }else if(type.equals("2")){//删除评论
             commentService.deleteById(Long.parseLong(comId));

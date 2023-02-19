@@ -15,12 +15,12 @@ public class RegisterResult {
      * 状态码，0-成功，其他值-失败
      */
     @JsonProperty("status_code")
-    private long statusCode;
+    private long statusCode = 1;
     /**
      * 返回状态描述
      */
     @JsonProperty("status_msg")
-    private String statusMsg;
+    private String statusMsg = "该用户已被注册，请更换一个呢";
 
     /**
      * 用户id

@@ -11,9 +11,9 @@ public interface UserService {
     int register(String username,String password);
 //    根据用户名查id
     long selectIdByName(String name);
-
+//    根据用户名和密码登录
     int login (String name, String password);
-
+//    根据用户 id查询用户详情信息
     User selectById(long id);
 
 }

@@ -39,11 +39,10 @@ public class FavoriteServiceImpl implements FavoriteService
         favorite.setIsFavourite(isFavorite);
         //点赞表中无数据则返回 0
         long id = favouriteMapper.selectByUVId(uid, vid);
-        if(id != 0){
+        if(id != 0) {
             favorite.setId(id);
             return favouriteMapper.updateByPrimaryKey(favorite);
         }
-//
         return favouriteMapper.insertSelective(favorite);
     }
 

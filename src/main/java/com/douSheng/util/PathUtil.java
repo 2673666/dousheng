@@ -9,6 +9,11 @@ import org.springframework.boot.system.ApplicationHome;
  public class PathUtil {
 
 //   返回文件的路径
+
+    /**
+     *
+      * @return 获取静态资源保存的路径
+     */
     public  String getPath(){
 
         ApplicationHome home = new ApplicationHome(this.getClass());

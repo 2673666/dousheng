@@ -5,6 +5,7 @@ import com.douSheng.pojo.Result;
 import com.douSheng.pojo.Video;
 import com.douSheng.service.FavoriteService;
 import com.douSheng.service.UserService;
+import com.douSheng.service.VideoService;
 import com.douSheng.util.ParseUrlUtil;
 import com.douSheng.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class FavoriteController {
     private FavoriteService favoriteService;
     @Autowired(required = false)
     private UserService userService;
+    @Autowired
+    private VideoService videoService;
 
 //    用户个人喜欢列表
     @RequestMapping("/list")
@@ -43,8 +46,13 @@ public class FavoriteController {
     }
 
 
-
-//    点赞
+    /**
+     *
+     * @param token
+     * @param vid 视频 id
+     * @param type 1 点赞 ；2 取消点赞
+     * @return
+     */
     @PostMapping("/action")
     public Result action(String token,
                        @RequestParam("video_id")String vid,
@@ -63,6 +71,8 @@ public class FavoriteController {
         if(suc!=0){
             res.setStatusCode(0);
             res.setStatusMsg("success");
+//            更新视频点赞数
+            videoService.updateFavorite(Long.parseLong(vid),type);
         }
 
         return res;
