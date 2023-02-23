@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class CommentController {
     public CommentListResult list(
             String token,
             @RequestParam("video_id") String vid
-    ){
+    ) throws ParseException {
         CommentListResult result = new CommentListResult();
         List<Comment> comments = commentService.selectCommentsByVid(Long.parseLong(vid));
         result.setCommentList(comments);
@@ -88,6 +89,7 @@ public class CommentController {
         if(type.equals("1")){//发表评论
             Comment comment = new Comment();
             comment.setCreateTime(new Date());
+            comment.setUpdateTime(new Date());
             comment.setVid(Long.parseLong(vid));
             comment.setUid(userService.selectIdByName(uname));
             comment.setContent(text);
@@ -96,9 +98,9 @@ public class CommentController {
                 result.setStatusMsg("success");
                 result.setStatusCode(0);
                 comment.setId(id);
+                comment.setUser(userService.selectById(comment.getUid()));
                 result.setComment(comment);
                 videoService.updateComment(Long.parseLong(vid));
-
             }
         }else if(type.equals("2")){//删除评论
             commentService.deleteById(Long.parseLong(comId));
